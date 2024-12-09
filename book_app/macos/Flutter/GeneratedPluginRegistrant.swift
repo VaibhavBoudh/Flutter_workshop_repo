@@ -7,7 +7,7 @@ import Foundation
 
 import file_selector_macos
 import path_provider_foundation
-import sqflite_darwin
+import sqflite
 import url_launcher_macos
 import video_player_avfoundation
 

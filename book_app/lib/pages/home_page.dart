@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
   final Gemini gemini = Gemini.instance;
 
   List<ChatMessage> messages = [];
-
   ChatUser currentUser = ChatUser(id: "0", firstName: "User");
   ChatUser geminiUser = ChatUser(
     id: "1",
@@ -31,59 +30,58 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          "Gemini Chat",
-        ),
+        title: const Text("Gemini Chat"),
       ),
       body: _buildUI(),
     );
   }
 
   Widget _buildUI() {
-  return DashChat(
-    inputOptions: InputOptions(
-      inputDecoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: BorderSide.none,
+    return DashChat(
+      inputOptions: InputOptions(
+        inputDecoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          filled: true,
+          fillColor: Colors.grey[200],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: BorderSide.none,
+          ),
+          hintText: "Type your message...",
         ),
-        hintText: "Type your message...",
-      ),
-      sendButtonBuilder: (Function() onSend) {
-        return InkWell(
-          onTap: onSend,
-          child: Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
+        sendButtonBuilder: (Function() onSend) {
+          return InkWell(
+            onTap: onSend,
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.blueAccent,
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: const Icon(
+                Icons.send,
+                color: Colors.white,
+              ),
+            ),
+          );
+        },
+        trailing: [
+          IconButton(
+            onPressed: _sendMediaMessage,
+            icon: const Icon(
+              Icons.image,
               color: Colors.blueAccent,
             ),
-            padding: const EdgeInsets.all(10.0),
-            child: const Icon(
-              Icons.send,
-              color: Colors.white,
-            ),
+            tooltip: "Choose Image",
           ),
-        );
-      },
-      trailing: [
-        IconButton(
-          onPressed: _sendMediaMessage,
-          icon: const Icon(
-            Icons.image,
-            color: Colors.blueAccent,
-          ),
-          tooltip: "Choose Image",
-        ),
-      ],
-    ),
-    currentUser: currentUser,
-    onSend: _sendMessage,
-    messages: messages,
-  );
-}
+        ],
+      ),
+      currentUser: currentUser,
+      onSend: _sendMessage,
+      messages: messages,
+    );
+  }
 
   void _sendMessage(ChatMessage chatMessage) {
     setState(() {
@@ -97,49 +95,46 @@ class _HomePageState extends State<HomePage> {
           File(chatMessage.medias!.first.url).readAsBytesSync(),
         ];
       }
-      gemini
-          .streamGenerateContent(
-        question,
-        images: images,
-      )
-          .listen((event) {
-        ChatMessage? lastMessage = messages.firstOrNull;
+      gemini.streamGenerateContent(question, images: images).listen((event) {
         String cleanResponse = _cleanResponse(event.content?.parts);
 
-        if (lastMessage != null && lastMessage.user == geminiUser) {
-          lastMessage = messages.removeAt(0);
-          lastMessage.text += cleanResponse;
-          setState(
-            () {
-              messages = [lastMessage!, ...messages];
-            },
-          );
-        } else {
-          ChatMessage message = ChatMessage(
-            user: geminiUser,
-            createdAt: DateTime.now(),
-            text: cleanResponse,
-          );
-          setState(() {
-            messages = [message, ...messages];
-          });
-        }
+        ChatMessage responseMessage = ChatMessage(
+          user: geminiUser,
+          createdAt: DateTime.now(),
+          text: cleanResponse,
+        );
+        setState(() {
+          messages = [responseMessage, ...messages];
+        });
+      }, onError: (error) {
+        setState(() {
+          messages = [
+            ChatMessage(
+              user: geminiUser,
+              createdAt: DateTime.now(),
+              text: "An error occurred: $error",
+            ),
+            ...messages,
+          ];
+        });
       });
     } catch (e) {
-      print(e);
+      print("Error sending message: $e");
     }
   }
 
   String _cleanResponse(List<dynamic>? parts) {
     if (parts == null) return "";
 
-    return parts.fold<String>("", (previous, current) {
-      if (current is TextPart) {
-        // Remove unwanted characters and whitespace
-        return "$previous ${current.text.replaceAll(RegExp(r'\*|~|\[.*?\]'), '').trim()}";
-      }
-      return previous; // Ignore non-text parts
-    }).trim(); // Ensure clean output with no leading/trailing spaces
+    return parts
+        .map((part) {
+          // if (part is TextPart) {
+          //   return part.text.replaceAll(RegExp(r'\*|~|\[.*?\]'), '').trim();
+          // }
+          return part.text.replaceAll(RegExp(r'\*|~|\[.*?\]'), '').trim();
+        })
+        .join(" ")
+        .trim();
   }
 
   void _sendMediaMessage() async {
