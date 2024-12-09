@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:async';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
@@ -84,29 +85,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _sendMessage(ChatMessage chatMessage) {
-    setState(() {
-      messages = [chatMessage, ...messages];
-    });
-    try {
-      String question = chatMessage.text;
-      List<Uint8List>? images;
-      if (chatMessage.medias?.isNotEmpty ?? false) {
-        images = [
-          File(chatMessage.medias!.first.url).readAsBytesSync(),
-        ];
-      }
-      gemini.streamGenerateContent(question, images: images).listen((event) {
-        String cleanResponse = _cleanResponse(event.content?.parts);
+  setState(() {
+    messages = [chatMessage, ...messages];
+  });
 
-        ChatMessage responseMessage = ChatMessage(
-          user: geminiUser,
-          createdAt: DateTime.now(),
-          text: cleanResponse,
-        );
-        setState(() {
-          messages = [responseMessage, ...messages];
-        });
-      }, onError: (error) {
+  try {
+    String question = chatMessage.text;
+    List<Uint8List>? images;
+    if (chatMessage.medias?.isNotEmpty ?? false) {
+      images = [
+        File(chatMessage.medias!.first.url).readAsBytesSync(),
+      ];
+    }
+
+    StringBuffer responseBuffer = StringBuffer();
+    StreamSubscription? subscription;
+
+    subscription = gemini.streamGenerateContent(question, images: images).listen(
+      (event) {
+        String cleanResponse = _cleanResponse(event.content?.parts);
+        responseBuffer.write("$cleanResponse ");
+      },
+      onError: (error) {
         setState(() {
           messages = [
             ChatMessage(
@@ -117,24 +117,44 @@ class _HomePageState extends State<HomePage> {
             ...messages,
           ];
         });
-      });
-    } catch (e) {
-      print("Error sending message: $e");
-    }
+        subscription?.cancel();
+      },
+      onDone: () {
+        String finalResponse = _limitWords(responseBuffer.toString(), 50);
+
+        ChatMessage responseMessage = ChatMessage(
+          user: geminiUser,
+          createdAt: DateTime.now(),
+          text: finalResponse,
+        );
+
+        setState(() {
+          messages = [responseMessage, ...messages];
+        });
+      },
+    );
+  } catch (e) {
+    print("Error sending message: $e");
   }
+}
 
   String _cleanResponse(List<dynamic>? parts) {
     if (parts == null) return "";
 
     return parts
         .map((part) {
-          // if (part is TextPart) {
-          //   return part.text.replaceAll(RegExp(r'\*|~|\[.*?\]'), '').trim();
-          // }
           return part.text.replaceAll(RegExp(r'\*|~|\[.*?\]'), '').trim();
         })
         .join(" ")
         .trim();
+  }
+
+  String _limitWords(String text, int wordLimit) {
+    List<String> words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.sublist(0, wordLimit).join(" ") + "...";
+    }
+    return text;
   }
 
   void _sendMediaMessage() async {
@@ -142,20 +162,54 @@ class _HomePageState extends State<HomePage> {
     XFile? file = await picker.pickImage(
       source: ImageSource.gallery,
     );
+
     if (file != null) {
-      ChatMessage chatMessage = ChatMessage(
-        user: currentUser,
-        createdAt: DateTime.now(),
-        text: "Describe this picture?",
-        medias: [
-          ChatMedia(
-            url: file.path,
-            fileName: "",
-            type: MediaType.image,
-          )
-        ],
+      TextEditingController messageController = TextEditingController();
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Enter a message"),
+            content: TextField(
+              controller: messageController,
+              decoration: const InputDecoration(
+                hintText: "Type your message here...",
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () {
+                  String userMessage = messageController.text.trim();
+                  if (userMessage.isNotEmpty) {
+                    ChatMessage chatMessage = ChatMessage(
+                      user: currentUser,
+                      createdAt: DateTime.now(),
+                      text: userMessage,
+                      medias: [
+                        ChatMedia(
+                          url: file.path,
+                          fileName: file.name,
+                          type: MediaType.image,
+                        )
+                      ],
+                    );
+                    _sendMessage(chatMessage);
+                  }
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text("Send"),
+              ),
+            ],
+          );
+        },
       );
-      _sendMessage(chatMessage);
     }
   }
 }
