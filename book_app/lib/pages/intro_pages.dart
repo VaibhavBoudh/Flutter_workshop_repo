@@ -7,44 +7,46 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //logo
-              Icon(
-                Icons.shopping_bag,
-                size: 72,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo
+            Icon(
+              Icons.shopping_bag,
+              size: 72,
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            const SizedBox(height: 25),
+
+            // Title
+            const Text(
+              "Book Store App",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Subtitle
+            Text(
+              "Store for all readers",
+              style: TextStyle(
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
-              const SizedBox(
-                height: 25,
-              ),
+            ),
+            const SizedBox(height: 25),
 
-              //title
-              const Text(
-                "Book Store App",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              //subtitle
-              Text(
-                "Store for all readers",
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              //button
-              MyButton(
-                  onTap: () => Navigator.pushNamed(context, '/shop_page'),
-                  child: const Icon(Icons.arrow_forward_ios))
-            ],
-          ),
-        ));
+            // Button
+            MyButton(
+              onTap: () => Navigator.pushReplacementNamed(context, '/login_page'),
+              child: const Icon(Icons.arrow_forward_ios),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

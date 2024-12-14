@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:book_app/models/product.dart';
 
 class Shop extends ChangeNotifier {

@@ -39,6 +39,8 @@ dependencies:
   image_picker: ^1.0.0
   dash_chat_2: ^0.0.21
   provider: ^6.1.2
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.3.4
 
 dev_dependencies:
   flutter_test:

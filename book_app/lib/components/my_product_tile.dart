@@ -56,11 +56,11 @@ class MyProductTile extends StatelessWidget {
                       color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(12)),
                   width: double.infinity,
-                  padding: EdgeInsets.all(25),
+                  padding: const EdgeInsets.all(25),
                   child: Image.asset(product.imagePath),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
 
@@ -81,7 +81,7 @@ class MyProductTile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
 
@@ -90,7 +90,7 @@ class MyProductTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '\$' + product.price.toStringAsFixed(2),
+                '\$${product.price.toStringAsFixed(2)}',
                 textAlign: TextAlign.left,
               ),
               // add to cart button
@@ -100,7 +100,7 @@ class MyProductTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12)),
                 child: IconButton(
                   onPressed: () => addtoCart(context),
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                 ),
               ),
             ],

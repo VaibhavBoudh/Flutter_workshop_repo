@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
   String _limitWords(String text, int wordLimit) {
     List<String> words = text.split(" ");
     if (words.length > wordLimit) {
-      return words.sublist(0, wordLimit).join(" ") + "...";
+      return "${words.sublist(0, wordLimit).join(" ")}...";
     }
     return text;
   }

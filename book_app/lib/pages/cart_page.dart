@@ -48,15 +48,15 @@ class CartPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Cart Page"),
+        title: const Text("Cart Page"),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         children: [
           // cart list
           Expanded(
             child: cart.isEmpty
-                ? const Center(child: const Text("Your cart is empty"))
+                ? const Center(child: Text("Your cart is empty"))
                 : ListView.builder(
                     itemCount: cart.length,
                     itemBuilder: (context, index) {
@@ -75,9 +75,9 @@ class CartPage extends StatelessWidget {
 
           // pay button
           Padding(
-            padding: EdgeInsets.only(bottom: 100),
+            padding: const EdgeInsets.only(bottom: 100),
             child: MyButton(
-                onTap: () => payButtonPressed(context), child: Text("Pay Now")),
+                onTap: () => payButtonPressed(context), child: const Text("Pay Now")),
           )
         ],
       ),
