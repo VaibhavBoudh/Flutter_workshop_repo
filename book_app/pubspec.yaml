@@ -40,6 +40,8 @@ dependencies:
   dash_chat_2: ^0.0.21
   provider: ^6.1.2
   firebase_core: ^3.8.1
+  cloud_firestore: ^5.6.5
+  firebase_storage: ^12.4.4
   firebase_auth: ^5.3.4
 
 dev_dependencies:
@@ -72,11 +74,17 @@ flutter:
     - assets/book_3.jpeg
     - assets/book_4.jpeg
     - assets/book_5.jpg
-    - assets/book_6.jpeg
+    - assets/book_6.jpg
     - assets/book_7.jpg
-    - assets/book_8.jpeg
+    - assets/book_8.jpg
     - assets/book_9.jpg
-    - assets/book_10.jpeg
+    - assets/book_10.jpg
+    - assets/book_11.jpg
+    - assets/book_12.jpg
+    - assets/book_13.jpg
+    - assets/book_14.jpg
+    - assets/book_15.jpg
+    - assets/book_16.jpg
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

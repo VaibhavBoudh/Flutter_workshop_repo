@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:book_app/models/product.dart';
 
-class Shop extends ChangeNotifier {
-  // List of products fetched from the API
-  final List<Product> _shop = [
+class Seeds {
+  static final List<Product> books = [
     Product(
       name: "The Alchemist",
       price: 199.99,
@@ -64,7 +63,6 @@ class Shop extends ChangeNotifier {
       description: "A classic self-improvement book by Napoleon Hill.",
       imagePath: 'assets/book_10.jpg',
     ),
-    // New Books
     Product(
       name: "Start with Why",
       price: 269.99,
@@ -103,24 +101,20 @@ class Shop extends ChangeNotifier {
     ),
   ];
 
-  // User's cart
-  final List<Product> _userCart = [];
+  static Future<void> seedBooksToFirestore() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final CollectionReference booksCollection = firestore.collection('books');
 
-  // Get the list of products
-  List<Product> get shop => _shop;
+    // Ensure the collection exists before adding documents
+    await booksCollection.doc('init').set({'status': 'initialized'});
 
-  // Get the user's cart
-  List<Product> get userCart => _userCart;
-
-  // Add item to cart
-  void addItemToCart(Product product) {
-    _userCart.add(product);
-    notifyListeners();
-  }
-
-  // Remove item from cart
-  void removeItemFromCart(Product product) {
-    _userCart.remove(product);
-    notifyListeners();
+    for (var book in books) {
+      await booksCollection.add({
+        'name': book.name,
+        'price': book.price,
+        'description': book.description,
+        'imagePath': book.imagePath,
+      });
+    }
   }
 }

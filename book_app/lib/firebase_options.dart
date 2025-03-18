@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
@@ -44,38 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBkeymHpjUUrsx7ANoLuAqsocIigrb4Is0',
-    appId: '1:545586718329:web:942f61a57ef20d79c9d6a8',
-    messagingSenderId: '545586718329',
-    projectId: 'fws16-a1ebd',
-    authDomain: 'fws16-a1ebd.firebaseapp.com',
-    storageBucket: 'fws16-a1ebd.firebasestorage.app',
+    apiKey: 'AIzaSyAqNBSu-sxTAKdvFEhbdccSmnwUQnOxmjU',
+    appId: '1:1063139514633:web:48cd8789570aee47235bd8',
+    messagingSenderId: '1063139514633',
+    projectId: 'bookappstore-a3e61',
+    authDomain: 'bookappstore-a3e61.firebaseapp.com',
+    storageBucket: 'bookappstore-a3e61.firebasestorage.app',
+    measurementId: 'G-FSN0EESX7E',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDcos0TxP7LBfdKFgbB61NirYHMTcU0QCg',
-    appId: '1:545586718329:android:19e453916576785bc9d6a8',
-    messagingSenderId: '545586718329',
-    projectId: 'fws16-a1ebd',
-    storageBucket: 'fws16-a1ebd.firebasestorage.app',
+    apiKey: 'AIzaSyDCAn0crFBFLDqjc0VNeFSo-VoJmdgJBQk',
+    appId: '1:1063139514633:android:ef489248d498344d235bd8',
+    messagingSenderId: '1063139514633',
+    projectId: 'bookappstore-a3e61',
+    storageBucket: 'bookappstore-a3e61.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDBtyd--jeTESECrcL43aAJuwUtB1kEMTw',
-    appId: '1:545586718329:ios:bde7cdd810761c7bc9d6a8',
-    messagingSenderId: '545586718329',
-    projectId: 'fws16-a1ebd',
-    storageBucket: 'fws16-a1ebd.firebasestorage.app',
+    apiKey: 'AIzaSyALNbsOoh-eyS_tfIReAtaKBv39_VMK0zo',
+    appId: '1:1063139514633:ios:44aa2149f0a00152235bd8',
+    messagingSenderId: '1063139514633',
+    projectId: 'bookappstore-a3e61',
+    storageBucket: 'bookappstore-a3e61.firebasestorage.app',
     iosBundleId: 'com.example.bookApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBkeymHpjUUrsx7ANoLuAqsocIigrb4Is0',
-    appId: '1:545586718329:web:8a474077c393a230c9d6a8',
-    messagingSenderId: '545586718329',
-    projectId: 'fws16-a1ebd',
-    authDomain: 'fws16-a1ebd.firebaseapp.com',
-    storageBucket: 'fws16-a1ebd.firebasestorage.app',
+    apiKey: 'AIzaSyAqNBSu-sxTAKdvFEhbdccSmnwUQnOxmjU',
+    appId: '1:1063139514633:web:191e63bc7ba5c185235bd8',
+    messagingSenderId: '1063139514633',
+    projectId: 'bookappstore-a3e61',
+    authDomain: 'bookappstore-a3e61.firebaseapp.com',
+    storageBucket: 'bookappstore-a3e61.firebasestorage.app',
+    measurementId: 'G-R1M495CZYE',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyALNbsOoh-eyS_tfIReAtaKBv39_VMK0zo',
+    appId: '1:1063139514633:ios:44aa2149f0a00152235bd8',
+    messagingSenderId: '1063139514633',
+    projectId: 'bookappstore-a3e61',
+    storageBucket: 'bookappstore-a3e61.firebasestorage.app',
+    iosBundleId: 'com.example.bookApp',
   );
 
 }
