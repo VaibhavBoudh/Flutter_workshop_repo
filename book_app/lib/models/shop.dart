@@ -5,38 +5,69 @@ class Shop extends ChangeNotifier {
   // List of products fetched from the API
   final List<Product> _shop = [
     Product(
-      name: "Product 1",
-      price: 99.99,
-      description: "description",
+      name: "The Alchemist",
+      price: 199.99,
+      description: "A novel by Paulo Coelho about following one's dreams.",
       imagePath: 'assets/book_1.jpg',
     ),
     Product(
-      name: "Product 2",
-      price: 99.99,
-      description: "description",
-      // imagePath: imagePath
+      name: "Atomic Habits",
+      price: 249.99,
+      description: "A book by James Clear on building good habits.",
       imagePath: 'assets/book_2.jpeg',
     ),
     Product(
-      name: "Product 3",
-      price: 99.99,
-      description: "description",
-      // imagePath: imagePath
+      name: "The Psychology of Money",
+      price: 299.99,
+      description: "Timeless lessons on wealth and happiness by Morgan Housel.",
       imagePath: 'assets/book_3.jpeg',
     ),
     Product(
-      name: "Product 4",
-      price: 99.99,
-      description: "description",
-      // imagePath: imagePath
+      name: "Deep Work",
+      price: 279.99,
+      description: "A book by Cal Newport on focus and productivity.",
       imagePath: 'assets/book_4.jpeg',
+    ),
+    Product(
+      name: "Sapiens: A Brief History of Humankind",
+      price: 399.99,
+      description: "Yuval Noah Harari explores the history of humankind.",
+      imagePath: 'assets/book_5.jpg',
+    ),
+    Product(
+      name: "Rich Dad Poor Dad",
+      price: 199.99,
+      description: "A personal finance book by Robert Kiyosaki.",
+      imagePath: 'assets/book_6.jpeg',
+    ),
+    Product(
+      name: "The 5 AM Club",
+      price: 149.99,
+      description: "Robin Sharma's guide to waking up early for success.",
+      imagePath: 'assets/book_7.jpg',
+    ),
+    Product(
+      name: "Ikigai",
+      price: 199.99,
+      description: "The Japanese secret to a long and happy life.",
+      imagePath: 'assets/book_8.jpeg',
+    ),
+    Product(
+      name: "The Subtle Art of Not Giving a F*ck",
+      price: 249.99,
+      description: "A self-help book by Mark Manson.",
+      imagePath: 'assets/book_9.jpg',
+    ),
+    Product(
+      name: "Think and Grow Rich",
+      price: 299.99,
+      description: "A classic self-improvement book by Napoleon Hill.",
+      imagePath: 'assets/book_10.jpeg',
     ),
   ];
 
   // User's cart
   final List<Product> _userCart = [];
-
-  // Fetch products from the API and populate the _shop list
 
   // Get the list of products
   List<Product> get shop => _shop;
@@ -50,7 +81,7 @@ class Shop extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Delete item from cart
+  // Remove item from cart
   void removeItemFromCart(Product product) {
     _userCart.remove(product);
     notifyListeners();
